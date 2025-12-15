@@ -13,7 +13,7 @@ function Sidebar() {
   const show = {
     dashboard: true,
     book: role !== "admin",                 // admin doesn't book
-    bookings: role !== "admin",             // admin doesn't have “my bookings”
+    bookings: role !== "admin",             // admin doesn't have "my bookings"
     payments: role === "student" || role === "lecturer",
     reports: role === "admin",
     settings: role === "admin" || role === "lecturer",
@@ -29,15 +29,15 @@ function Sidebar() {
       <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
         <p className="text-xs font-semibold text-slate-400 uppercase mb-3">Main</p>
 
-        {show.dashboard && <NavLink to="/" end className={navClass}>Dashboard</NavLink>}
-        {show.book && <NavLink to="/book" className={navClass}>Book Parking</NavLink>}
-        {show.bookings && <NavLink to="/bookings" className={navClass}>My Bookings</NavLink>}
-        {show.payments && <NavLink to="/payments" className={navClass}>Payments</NavLink>}
-        {show.reports && <NavLink to="/reports" className={navClass}>Reports (Admin)</NavLink>}
+        {show.dashboard && <NavLink to="." end className={navClass}>Dashboard</NavLink>}
+        {show.book && <NavLink to="book" className={navClass}>Book Parking</NavLink>}
+        {show.bookings && <NavLink to="bookings" className={navClass}>My Bookings</NavLink>}
+        {show.payments && <NavLink to="payments" className={navClass}>Payments</NavLink>}
+        {show.reports && <NavLink to="reports" className={navClass}>Reports (Admin)</NavLink>}
 
         <p className="text-xs font-semibold text-slate-400 uppercase mt-6 mb-3">Support</p>
-        {show.support && <NavLink to="/support" className={navClass}>Help &amp; Support</NavLink>}
-        {show.settings && <NavLink to="/settings" className={navClass}>Settings</NavLink>}
+        {show.support && <NavLink to="support" className={navClass}>Help & Support</NavLink>}
+        {show.settings && <NavLink to="settings" className={navClass}>Settings</NavLink>}
       </nav>
 
       <div className="px-4 py-4 border-t border-slate-800 text-xs text-slate-400">
