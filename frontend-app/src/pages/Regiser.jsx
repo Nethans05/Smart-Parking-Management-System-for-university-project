@@ -1,48 +1,39 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const API_BASE = "";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { login, isAuthenticated } = useAuth();
 
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(location.state?.message || "");
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/", { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
     setSubmitting(true);
 
     try {
-      const res = await fetch(`${API_BASE}/api/auth/login`, {
+      const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ fullName, email, password, role }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data?.message || "Login failed");
+        setError(data?.message || "Registration failed");
         return;
       }
 
-      login({ token: data.token, user: data.user });
-      navigate("/", { replace: true });
+      // Redirect to login on success
+      navigate("/login", { state: { message: "Registration successful! Please log in." } });
     } catch {
       setError("Could not connect to server. Is backend running?");
     } finally {
@@ -54,14 +45,8 @@ function Login() {
     <div className="min-h-screen flex items-center justify-center bg-slate-100">
       <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-8">
         <h2 className="text-2xl font-bold text-center mb-6">
-          Smart Parking Login
+          Smart Parking Register
         </h2>
-
-        {success && (
-          <div className="mb-4 text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg p-3">
-            {success}
-          </div>
-        )}
 
         {error && (
           <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
@@ -70,6 +55,18 @@ function Login() {
         )}
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label className="block text-sm font-medium mb-1">Full Name</label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Enter your full name"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
             <input
@@ -94,19 +91,34 @@ function Login() {
             />
           </div>
 
+          <div>
+            <label className="block text-sm font-medium mb-1">Role</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="student">Student</option>
+              <option value="lecturer">Lecturer</option>
+              <option value="visitor">Visitor</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
           <button
             type="submit"
             disabled={submitting}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-60"
           >
-            {submitting ? "Logging in..." : "Login"}
+            {submitting ? "Registering..." : "Register"}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-4">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
-            Register here
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login here
           </Link>
         </p>
 
@@ -118,4 +130,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

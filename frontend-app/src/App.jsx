@@ -9,6 +9,7 @@ import ReportsPage from "./pages/ReportsPage";
 import SupportPage from "./pages/SupportPage";
 import SettingsPage from "./pages/SettingsPage";
 import Login from "./pages/Login";
+import Register from "./pages/Regiser";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         {/* Public */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Protected Dashboard Layout */}
         <Route
