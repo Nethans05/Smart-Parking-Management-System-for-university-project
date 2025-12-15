@@ -2,6 +2,13 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function ProtectedRoute({ children, allowRoles }) {
+  // Temporary bypass for authentication
+  const tempBypass = true;
+
+  if (tempBypass) {
+    return children;
+  }
+
   const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) return <div className="min-h-screen bg-slate-100" />;
