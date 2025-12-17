@@ -8,6 +8,7 @@ import reportRoutes from "./routes/reportRoutes.js";
 dotenv.config();
 
 const app = express();
+
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
